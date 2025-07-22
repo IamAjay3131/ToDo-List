@@ -5,4 +5,4 @@ ToDo_list is a React with typescript based application that allows users to mana
 - Also delete the ToDo if no longer needed.
 - The app generates dynamic IDs for each to-do
 - Using browser's Local Storage to persist data across sessions, ensuring tasks remain even after a page refresh or browser close.
-- All gives the delete option for entire list.
+- Also gives the delete option for entire list.
