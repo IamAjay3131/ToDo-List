@@ -65,11 +65,14 @@ const filteredTodos = filterPriority
 
   return(
     <>  
-    <h1 className="text-center mb-4 bg-dark-subtle">ToDo List</h1>
     <div className="container">
-    <AddTodo onAdd={handleAddTodo} onUpdate={handleUpdate} editingTodo={edit} />
-   <Search onSearch={searchFilter} />
+      <div className="sticky-top bg-white py-3">
+        <h1 className="text-center mb-4 bg-dark-subtle">ToDo List</h1>
+        <AddTodo onAdd={handleAddTodo} onUpdate={handleUpdate} editingTodo={edit} />
+        <Search onSearch={searchFilter} />
+      </div>
 
+      <div  className="container mt-3">
         <table className="table table-striped table-hover table-bordered text-center">
           <thead>
             <tr className="table-info">
@@ -114,6 +117,7 @@ const filteredTodos = filterPriority
         </table>
         <button className="btn btn-danger" onClick={handleClearAll}>Clear All Todo</button>
         </div>
+      </div>
     </>
   )
 }
