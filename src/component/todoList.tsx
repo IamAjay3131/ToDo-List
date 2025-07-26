@@ -6,10 +6,17 @@ import { setTodoData } from "../Utils/todoLocalStorege";
 import { clearTodo } from "../Utils/todoLocalStorege";
 import { startId } from "../Utils/id";
 import '../App.css';
+import Search from "./search";
+
+
 
 const TodoList:React.FC=()=>{
   
   const[state,setState]=useState<ITodo[]>(() => getTodoData());
+
+  const[edit,setEdit] = useState<ITodo | null>(null);
+
+  const [filterPriority, setFilterPriority] = useState<string>("");
 
   const handleAddTodo = (values:ITodo) => {
       setState((prev) => [...prev, values])
@@ -37,11 +44,32 @@ const TodoList:React.FC=()=>{
   );
 };
 
+const handleUpdate = (updatedTodo: ITodo) => {
+  setState((prev) =>
+    prev.map((todo) => (todo.id === updatedTodo.id ? updatedTodo : todo))
+  );
+   setEdit(null);
+};
+
+const handleEdit = (todos : ITodo) => {
+  setEdit(todos);
+};
+
+const searchFilter = (priority: string) => {
+  setFilterPriority(priority);
+};
+
+const filteredTodos = filterPriority
+  ? state.filter((todo) => todo.priority.toLowerCase() === filterPriority.toLowerCase())
+  : state;
+
   return(
     <>  
     <h1 className="text-center mb-4 bg-dark-subtle">ToDo List</h1>
     <div className="container">
-    <AddTodo onAdd={handleAddTodo} />
+    <AddTodo onAdd={handleAddTodo} onUpdate={handleUpdate} editingTodo={edit} />
+   <Search onSearch={searchFilter} />
+
         <table className="table table-striped table-hover table-bordered text-center">
           <thead>
             <tr className="table-info">
@@ -54,7 +82,8 @@ const TodoList:React.FC=()=>{
           </thead>
           <tbody>
             {
-              state.map((todo, index) => (
+               filteredTodos.length > 0 ? (
+              filteredTodos.map((todo, index) => (
                 <tr key={todo.id} className={todo.completed ? 'strikeout' : ''}>                  
                   <td>{index+1}</td>
                   <td>{todo.name}</td>
@@ -67,14 +96,20 @@ const TodoList:React.FC=()=>{
                       checked={todo.completed || false}
                       onChange={() => taskComplete(todo.id)}
                     />
-                    <button className="btn btn-sm btn-danger ms-3" 
+                    <i className="ms-3 bi bi-pencil-fill" onClick={() => handleEdit(todo)}></i> 
+                    <button className="btn btn-sm btn-danger ms-3 " 
                       onClick={() => handleDelete(todo.id)}>
                         <i className="bi bi-trash"></i>
-                    </button>                   
+                    </button>      
+                         
                   </td>
                 </tr>
               ))
-              }
+            ): (
+            <tr>
+              <td colSpan={4}>No users found</td>
+            </tr>
+              )}
           </tbody>
         </table>
         <button className="btn btn-danger" onClick={handleClearAll}>Clear All Todo</button>

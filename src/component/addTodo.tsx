@@ -1,12 +1,14 @@
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import { ITodo } from "../models/IUser";
 import createId from "../Utils/id";
 
 interface addIteamsPRops{
     onAdd:(addData:ITodo)=>void;
+    onUpdate:(updateData:ITodo)=>void;
+    editingTodo?: ITodo | null;
 }
 
-const AddTodo:React.FC<addIteamsPRops> = ({onAdd}) => {
+const AddTodo:React.FC<addIteamsPRops> = ({onAdd, onUpdate, editingTodo}) => {
 
     const[state,setState] = useState({
         id:'',
@@ -14,6 +16,17 @@ const AddTodo:React.FC<addIteamsPRops> = ({onAdd}) => {
         priority:'',
         date:'',
     });
+
+    useEffect(() => {
+  if (editingTodo) {
+    setState(prev => ({
+      ...prev, name:editingTodo.name,
+      priority: editingTodo.priority,
+      date: editingTodo.date
+    }));
+  }
+}, [editingTodo]);
+
 
     const {id, name, priority, date} = state;
 
@@ -24,15 +37,20 @@ const AddTodo:React.FC<addIteamsPRops> = ({onAdd}) => {
         }
 
         const newTodoValues:ITodo={
-            id:createId(),
+            id: editingTodo ? editingTodo.id :createId(),
             name,
             priority,
             date,
             completed:false,
         };
-         onAdd(newTodoValues)
-
+        if(editingTodo){
+          onUpdate(newTodoValues)  
+        }else{
+            onAdd(newTodoValues)
+        }
+         
          setState({id:'',name:'',priority:'',date:''})
+
     };
 
     return(
@@ -69,7 +87,7 @@ const AddTodo:React.FC<addIteamsPRops> = ({onAdd}) => {
                     />
                      <button type="button" className="btn btn-primary"
                         onClick={handleClick}>
-                            Add-Button
+                            {editingTodo? "Save" : "Add"}
                     </button>
                    </form>
             </div>
