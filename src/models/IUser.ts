@@ -1,7 +1,7 @@
 export interface ITodo{
-    id:number
+    id:string
     name:string
-    priority: 'High' | 'Medium' | 'Low' |any;
+    priority:string;
     date:string
     completed: boolean;
     

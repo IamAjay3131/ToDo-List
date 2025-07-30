@@ -1,20 +1,11 @@
-Project Description:
-ToDo_list is a React with TypeScript-based application that allows users to manage daily tasks effectively.
-
 Users can:
-
-Add new to-do items with a name, priority level (High, Medium, or Low), and a due date.
-
-Edit existing to-do items, allowing updates to task details as needed.
-
-Filter tasks by priority to easily view High, Medium, or Low priority items.
-
-Mark tasks as done/undone using a checkbox.
-
-Delete individual to-do items if no longer needed.
-
-Delete the entire list at once.
-
-The app generates dynamic IDs for each to-do.
-
-Data is persisted using the browser's Local Storage, ensuring tasks remain even after a page refresh or browser close.
+1. Add new ToDo items with a name, priority level (High, Medium, or Low), and a due date.
+2. Edit existing ToDo items to update task details as needed.
+3. Filter ToDo items by priority to easily view High, Medium, or Low priority tasks.
+4. Mark ToDo items as done or undone using a checkbox.
+5. Delete individual ToDo items if no longer needed.
+6. Delete the entire list at once.
+7. Generate dynamic IDs for each ToDo item using uuid.
+8. Display Notify messages when adding or updating a ToDo item.
+9. Sort ToDo items based on their due date.
+10. Persist data using the browser's Local Storage, ensuring tasks remain even after a page refresh or browser restart.

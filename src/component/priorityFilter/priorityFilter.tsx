@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 
-interface filterBarProps {
-  onSearch: (priority: string) => void;
+// Props for the PriorityFilter component.
+interface filterBarProps {                   
+  onFilter: (priority: string) => void;     
 }
 
-const Search: React.FC<filterBarProps> = ({ onSearch }) => {
+const PriorityFilter: React.FC<filterBarProps> = ({ onFilter }) => {
   const [selected, setSelected] = useState("");
 
+   // Updates local state and calls onFilter with new value.
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     setSelected(value);
-    onSearch(value);
+    onFilter(value);
   };
 
   return (
@@ -29,4 +31,4 @@ const Search: React.FC<filterBarProps> = ({ onSearch }) => {
   );
 };
 
-export default Search;
+export default PriorityFilter;
