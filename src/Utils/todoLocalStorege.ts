@@ -1,4 +1,4 @@
-import { ITodo } from "../models/IUser";
+import { ITodo } from "../models/ITodo";
 
 
 const todoKey = "todoKey";

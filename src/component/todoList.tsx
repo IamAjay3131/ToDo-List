@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from "react";
 import AddTodo from "./addTodo/addTodo";
-import { ITodo } from "../models/IUser";
+import { ITodo } from "../models/ITodo";
 import { getTodoData, setTodoData,clearTodo } from "../Utils/todoLocalStorege";
 import '../App.css';
 import PriorityFilter from "./priorityFilter/priorityFilter";

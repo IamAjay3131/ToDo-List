@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import AddTodo from "./addTodo";
-import { ITodo } from "../../models/IUser";
+import { ITodo } from "../../models/ITodo";
 
 describe("AddTodo Component", () => {
   const mockOnAdd = jest.fn();

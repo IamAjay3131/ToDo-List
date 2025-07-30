@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ITodo } from "../../models/IUser";
+import { ITodo } from "../../models/ITodo";
 import { v4 as uuidv4 } from 'uuid';
 
 /* Props for the AddTodo component.
