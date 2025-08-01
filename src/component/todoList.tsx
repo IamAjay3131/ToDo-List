@@ -26,7 +26,7 @@ const TodoList:React.FC=()=>{
 const [sortByDueDate, setSortByDueDate] = useState<boolean | null>(null);
 
 //Adds a new todo item.
-  const handleAddTodo = (values: Omit<ITodo, 'id'>) => {
+  const handleAddTodo = (values: Omit < ITodo, 'id'>) => {
   const newTodo: ITodo = { ...values, id: uuidv4() };
   setState(prev => [...prev, newTodo]);
   ($ as any).notify("Todo added successfully!", "success");
