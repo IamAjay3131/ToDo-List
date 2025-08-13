@@ -1,6 +1,5 @@
 import { ITodo } from "../models/ITodo";
 
-
 const todoKey = "todoKey";
 
 export const getTodoData = ():ITodo[] => {
@@ -14,7 +13,6 @@ export const getTodoData = ():ITodo[] => {
         console.error("Failed to parse todo data from localStorage:", error);
     return [];
     }
-
 };
 
 export const setTodoData = (todos:ITodo[]) => {

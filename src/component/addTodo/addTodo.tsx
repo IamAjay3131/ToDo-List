@@ -1,125 +1,99 @@
 import React, { useEffect, useState } from "react";
 import { ITodo } from "../../models/ITodo";
 
-
-/* Props for the AddTodo component.
-Callback to add a new Todo item.
-Callback to update an existing Todo item.
-Optional Todo object when editing existing item.*/
-
 interface AddTodoProps {
-  onAdd: (addData: Omit<ITodo ,"id">) => void;
+  onAdd: (addData: Omit<ITodo, "id">) => void;
   onUpdate: (updateData: ITodo) => void;
   editingTodo?: ITodo | null;
 }
 
 const AddTodo: React.FC<AddTodoProps> = ({ onAdd, onUpdate, editingTodo }) => {
-
-  /*State object for form inputs.*/
-
-  const [addToDoItem, setAddToDoItem] = useState({
+  const [todoItem, setTodoItem] = useState<Omit<ITodo, "completed"> & { id?: string }>({
     id: "",
     name: "",
     priority: "",
-    date: ""
+    date: "",
   });
 
-  //Errors object for form validation.
-  const [errors, setErrors] = useState<{id?: String; name?: string; priority?: string; date?: string }>({});
+  const [submitted, setSubmitted] = useState(false);
 
-  /**Synchronizes local form state whenever editingTodo changes.
-   * If editingTodo is set, populates form fields with its values;
-   * otherwise clears the form for a new entry. */
   useEffect(() => {
     if (editingTodo) {
-      setAddToDoItem({
-        id:editingTodo.id,
+      setTodoItem({
+        id: editingTodo.id,
         name: editingTodo.name,
         priority: editingTodo.priority,
-        date: editingTodo.date
+        date: editingTodo.date,
       });
-      setErrors({});
+      setSubmitted(false);
+
     } else {
-      setAddToDoItem({ id: "", name: "", priority: "", date: "" });
-      setErrors({});
+      setTodoItem({ id: "", name: "", priority: "", date: "" });
+      setSubmitted(false);
     }
+    
   }, [editingTodo]);
 
-  // Handles changes in input/select fields.
-  const handleChange = (field: keyof typeof addToDoItem, value: string) => {
-  setAddToDoItem(prev => ({ ...prev, [field]: value }));
-  if (errors[field]) {
-    setErrors(prev => ({ ...prev, [field]: undefined }));
-  }
-};
+  const { id, name, priority, date } = todoItem;
 
-const{id, name, priority, date} = addToDoItem;
+  const isValid = name !== "" && priority !== "" && date !== "";
 
-   /**
-   * Handles the Add / Update button click.
-   * - Validates form fields (name, priority, date).  
-   * - If validation fails, sets error messages and aborts.  
-   * - If valid: constructs `newTodo` object (with new or existing ID),  
-   *   then calls `onUpdate` if editing, or `onAdd` if adding.
-   */
-  const handleClick = () => {
-    const newErr: typeof errors = {};
-    if (!name.trim()) newErr.name = "Name is required";
-    if (!priority) newErr.priority = "Priority is required";
-    if (!date) newErr.date = "Due date required";
-    if (Object.keys(newErr).length) {
-      setErrors(newErr);
-      return;
+  const handleSubmit = () => {
+    setSubmitted(true);
+    if (!isValid) return;
+
+    if (editingTodo) {
+      onUpdate({
+        id: id!,
+        name,
+        priority,
+        date,
+        completed: editingTodo.completed,
+      });
+    } else {
+      onAdd({ name, priority, date, completed: false });
     }
 
-    const newTodo: Omit<ITodo, 'id'>  = {
-      name: name,
-      priority: priority,
-      date: date,
-      completed: false
-    };
-
-    editingTodo ? onUpdate({...newTodo, id:editingTodo.id}) : onAdd(newTodo);
-
-    setAddToDoItem({ id: "", name: "", priority: "", date: "" });
-    setErrors({});
+    setTodoItem({ id: "", name: "", priority: "", date: "" });
+    setSubmitted(false);
   };
+
+  const nameError = submitted && !name;
+  const priorityError = submitted && !priority;
+  const dateError = submitted && !date;
 
   return (
     <div className="container mb-4">
-      <form className="input-group">
+      <form className="input-group" onSubmit={(e) => e.preventDefault()}>
         <input
           type="text"
           placeholder="ToDo name"
           value={name}
-          onChange={e => handleChange("name", e.target.value)}
-          className={`form-control w-25 ${errors.name ? "is-invalid" : ""}`}
+          onChange={(e) => setTodoItem({ ...todoItem, name: e.target.value })}
+          className={`form-control ${nameError ? "error" : ""}`}
         />
+
         <select
           value={priority}
-          onChange={e => handleChange("priority", e.target.value)}
-          className={`form-select w-20 ${errors.priority ? "is-invalid" : ""}`}
+          onChange={(e) => setTodoItem({ ...todoItem, priority: e.target.value })}
+          className={`form-control ${priorityError ? "error" : ""}`}
         >
           <option value="">Select Priority</option>
           <option value="Low">Low</option>
           <option value="Medium">Medium</option>
           <option value="High">High</option>
         </select>
+
         <input
           type="date"
-          data-testid="due-date"
           value={date}
-          onChange={e => handleChange("date", e.target.value)}
-          className={`form-control w-15 ${errors.date ? "is-invalid" : ""}`}
+          onChange={(e) => setTodoItem({ ...todoItem, date: e.target.value })}
+          className={`form-control ${dateError ? "error" : ""}`}
         />
-        <button type="button" className="btn btn-primary" onClick={handleClick}>
+
+        <button type="button" className="btn btn-primary" onClick={handleSubmit}>
           {editingTodo ? "Save" : "Add"}
         </button>
-        <div className="input-group">
-        {errors.name && <div className="invalid-feedback">{errors.name}</div>}
-         {errors.priority && <div className="invalid-feedback">{errors.priority}</div>}
-         {errors.date && <div className="invalid-feedback">{errors.date}</div>}
-        </div>
       </form>
     </div>
   );
