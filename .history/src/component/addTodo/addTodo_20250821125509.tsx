@@ -36,7 +36,7 @@ const AddTodo: React.FC<AddTodoProps> = ({ onAdd, onUpdate, editingTodo }) => {
     
   }, [editingTodo]);
 
-  const { id, name, priority, date, completed } = todoItem;
+  const { id, name, priority, date } = todoItem;
 
   const isValid = name !== "" && priority !== "" && date !== "";
 
@@ -50,10 +50,10 @@ const AddTodo: React.FC<AddTodoProps> = ({ onAdd, onUpdate, editingTodo }) => {
         name,
         priority,
         date,
-        completed,
+        completed: editingTodo.completed,
       });
     } else {
-      onAdd({ name, priority, date, completed });
+      onAdd({ name, priority, date, completed: false });
     }
 
     setTodoItem({ id: "", name: "", priority: "", date: "", completed: false });

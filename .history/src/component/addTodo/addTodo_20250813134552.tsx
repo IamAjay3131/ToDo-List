@@ -8,12 +8,11 @@ interface AddTodoProps {
 }
 
 const AddTodo: React.FC<AddTodoProps> = ({ onAdd, onUpdate, editingTodo }) => {
-  const [todoItem, setTodoItem] = useState<ITodo> ({
+  const [todoItem, setTodoItem] = useState<Omit<ITodo, "completed"> & { id?: string }>({
     id: "",
     name: "",
     priority: "",
     date: "",
-    completed:false,
   });
 
   const [submitted, setSubmitted] = useState(false);
@@ -25,18 +24,17 @@ const AddTodo: React.FC<AddTodoProps> = ({ onAdd, onUpdate, editingTodo }) => {
         name: editingTodo.name,
         priority: editingTodo.priority,
         date: editingTodo.date,
-        completed:editingTodo.completed,
       });
       setSubmitted(false);
 
     } else {
-      setTodoItem({ id: "", name: "", priority: "", date: "", completed:false });
+      setTodoItem({ id: "", name: "", priority: "", date: "" });
       setSubmitted(false);
     }
     
   }, [editingTodo]);
 
-  const { id, name, priority, date, completed } = todoItem;
+  const { id, name, priority, date } = todoItem;
 
   const isValid = name !== "" && priority !== "" && date !== "";
 
@@ -50,13 +48,13 @@ const AddTodo: React.FC<AddTodoProps> = ({ onAdd, onUpdate, editingTodo }) => {
         name,
         priority,
         date,
-        completed,
+        completed: editingTodo.completed,
       });
     } else {
-      onAdd({ name, priority, date, completed });
+      onAdd({ name, priority, date, completed: false });
     }
 
-    setTodoItem({ id: "", name: "", priority: "", date: "", completed: false });
+    setTodoItem({ id: "", name: "", priority: "", date: "" });
     setSubmitted(false);
   };
 

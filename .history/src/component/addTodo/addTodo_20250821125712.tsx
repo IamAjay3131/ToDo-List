@@ -53,7 +53,7 @@ const AddTodo: React.FC<AddTodoProps> = ({ onAdd, onUpdate, editingTodo }) => {
         completed,
       });
     } else {
-      onAdd({ name, priority, date, completed });
+      onAdd({ name, priority, date, completed: false });
     }
 
     setTodoItem({ id: "", name: "", priority: "", date: "", completed: false });

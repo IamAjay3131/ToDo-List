@@ -1,0 +1,32 @@
+tr.strikeout td {
+  position: relative;
+}
+tr.strikeout td::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  border-bottom: 1px solid #000;
+  pointer-events: none;
+}
+
+.table-scroll {
+  max-height: 60vh;
+  overflow-y: auto;
+  overflow-x: visible;
+}
+
+.table-scroll thead th {
+  position: sticky;
+  top: 0;
+  background-color:skyblue;
+  z-index: 2;
+  
+}
+
+.error {
+  border: 1px solid red !important;
+}
+
+
